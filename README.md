@@ -33,9 +33,9 @@ Windows
 ## Run app
 
 ```shell
-(.venv) $ flask run
+(.venv) $ flask --app flaskr run
 ```
 
 ```shell
-(.venv) $ flask run --debug
+(.venv) $ flask --app flaskr run --debug
 ```
