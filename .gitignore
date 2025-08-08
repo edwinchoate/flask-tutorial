@@ -3,7 +3,12 @@
 *.pyc
 __pycache__/
 
-instance/
+# instance/
+#             Checking in instance/ for this project BECAUSE it is a tutorial project and 
+#             I want to document what I did. You should not normally check in instance/.     
+
+*.sqlite
+*.db
 
 .pytest_cache/
 .coverage
