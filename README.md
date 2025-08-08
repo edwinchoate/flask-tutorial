@@ -1,0 +1,41 @@
+# flaskr
+
+The [tutorial project](https://flask.palletsprojects.com/en/stable/tutorial/) on [flask.palletsprojects.com](https://flask.palletsprojects.com)
+
+## Create venv (if necessary)
+
+```shell
+$ python3 -m venv .venv
+```
+
+## Activate venv
+
+Unix
+
+```shell
+$ source .venv/bin/activate
+(.venv) $
+```
+
+Windows
+
+```shell
+> .venv/Scripts/activate
+(.venv) >
+```
+
+## Install dependencies
+
+```shell
+(.venv) $ pip install -r requirements.txt
+```
+
+## Run app
+
+```shell
+(.venv) $ flask run
+```
+
+```shell
+(.venv) $ flask run --debug
+```
