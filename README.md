@@ -30,6 +30,12 @@ Windows
 (.venv) $ pip install -r requirements.txt
 ```
 
+## Initialize the database
+
+```shell
+(.venv) $ flask --app flaskr init_db
+```
+
 ## Run app
 
 ```shell
