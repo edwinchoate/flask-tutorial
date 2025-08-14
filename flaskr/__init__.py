@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from . import db
+from . import db, auth
 
 def create_app(test_config=None):
 
@@ -27,5 +27,7 @@ def create_app(test_config=None):
         return 'Hello, World!'
 
     db.init_app(app)
+
+    app.register_blueprint(auth.blueprint)
 
     return app
