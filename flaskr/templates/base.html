@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | Flaskr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Flaskr</a>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                {% if g.user %}
+                    <li>{{ g.user['username'] }}</li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        {% for message in get_flashed_messages() %}
+            <div class="text-danger">{{ message }}</div>
+        {% endfor %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <footer>{% block footer %}{% endblock %}</footer>
+</body>
+</html>
