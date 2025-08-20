@@ -1,0 +1,15 @@
+
+html {
+    font-family: sans-serif;
+    font-size: 1.06em;
+}
+
+body {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-danger {
+    color: red;
+}
