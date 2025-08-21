@@ -11,12 +11,15 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']    
         password = request.form['password']
+        confirm_password = request.form['confirm-password']
         db = get_db()
         error = None
         if not username:
             error = 'Username is required'
-        elif not password:
+        elif not password or not confirm_password:
             error = 'Password is required'
+        elif password != confirm_password:
+            error = 'Passwords do not match'
         if error is None:
             try: 
                 db.execute(
@@ -29,6 +32,7 @@ def signup():
             else: 
                 return redirect(url_for('auth.login'))
         flash(error)
+        return render_template('auth/signup.html', username=username)
     return render_template('auth/signup.html')
 
 @blueprint.route('/login', methods=['GET', 'POST'])
@@ -50,6 +54,7 @@ def login():
             return redirect(url_for('index'))
 
         flash(error)
+        return render_template('auth/login.html', username=username)
     return render_template('auth/login.html')
 
 
