@@ -7,10 +7,17 @@
 {% block page_content%}
     <form method="POST">
         <label for="username">Username</label>
-        <input name="username" id="username" required>
+        <input name="username" id="username" required value="{{ username|default('') }}">
 
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required>
+
+        <label for="confirm-password">Confirm password</label>
+        <input type="password" name="confirm-password" id="confirm-password" required>
+
+        {% for message in get_flashed_messages() %}
+            <div class="text-danger">{{ message }}</div>
+        {% endfor %}
 
         <input type="submit" value="Sign Up">
     </form>
