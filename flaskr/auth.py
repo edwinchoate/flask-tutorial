@@ -1,11 +1,12 @@
 import functools
 from flask import g, Blueprint, render_template, request, flash, url_for, redirect, session
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flaskr.db import get_db
+from sqlite3 import IntegrityError
 
 blueprint = Blueprint('auth', __name__, url_prefix='/auth')
 
-@blueprint.route('signup', methods=['GET', 'POST'])
+@blueprint.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']    
@@ -15,15 +16,15 @@ def signup():
         if not username:
             error = 'Username is required'
         elif not password:
-            erorr = 'Password is required'
+            error = 'Password is required'
         if error is None:
             try: 
                 db.execute(
-                    "INSERT INTO user (username, password) (?, ?)",
+                    "INSERT INTO users (username, password) VALUES (?, ?)",
                     (username, generate_password_hash(password))
                 )
                 db.commit()
-            except db.IntegrityError:
+            except IntegrityError:
                 error = f'{username} is already taken'
             else: 
                 return redirect(url_for('auth.login'))
@@ -38,10 +39,9 @@ def login():
         db = get_db()
         error = None
 
-        user = db.execute("SELECT * FROM users WHERE username = ?", username).fetchone()
-        correct_password = check_password_hash(user['password'], password)
+        user = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
 
-        if user is None or not correct_password: 
+        if user is None or not check_password_hash(user['password'], password): 
             error = 'Invalid username or password'
 
         if error is None:
@@ -56,14 +56,14 @@ def login():
 @blueprint.route('/logout')
 def logout(): 
     session.clear()
-    redirect(url_for('auth.login'))
+    return redirect(url_for('auth.login'))
 
 
 @blueprint.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
     if user_id is not None:
-        user = get_db().execute("SELECT * FROM users WHERE id = ?", user_id).fetchone()
+        user = get_db().execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
         g.user = user
     else:
         g.user = None
@@ -74,7 +74,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login'))
         else: 
             return view(**kwargs)
     return wrapped_view
