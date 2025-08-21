@@ -24,11 +24,13 @@
 
     <main>
 
+        {% block page_header %}{% endblock %}
+
         {% for message in get_flashed_messages() %}
             <div class="text-danger">{{ message }}</div>
         {% endfor %}
 
-        {% block content %}{% endblock %}
+        {% block page_content %}{% endblock %}
 
     </main>
 
